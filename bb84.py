@@ -33,6 +33,9 @@ class BB84:
     
     def clear(self):
         self.bob_recieved = None
+        self.alice_message = None
+        self.alice_base = None
+        self.bob_base = None
     
     def change_message(self, is_attack=False):
         if self.alice_message is None:
@@ -48,7 +51,12 @@ class BB84:
         # Alice sends the qubits to Bob
         if is_attack:
             # TODO: add attack
-            self.bob_recieved = deepcopy(self.alice_shifted_message)
+            self.eve_measurements = Qubit.measure_qubits(self.alice_shifted_message)
+            self.eve_qmeasurements = Qubit.bit_to_qubit(self.eve_measurements)
+            self.eve_base = self.generate_bitstring()
+            self.eve_sends = self.shift_base(self.eve_qmeasurements, self.eve_base)
+
+            self.bob_recieved = deepcopy(self.eve_sends)
         else:
             self.bob_recieved = deepcopy(self.alice_shifted_message)
 
@@ -104,7 +112,7 @@ class BB84:
         self.change_message(is_attack)
         self.is_attacked = self.check()
 
-        print(self.key_alice)
-        print(self.key_bob)
+        # print(self.key_alice)
+        # print(self.key_bob)
 
         return self.is_failed(is_attack)

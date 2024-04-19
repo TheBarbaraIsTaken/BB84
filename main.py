@@ -15,6 +15,8 @@ if __name__ == "__main__":
     # print(q)
     
     # BB84 protocol
-    protocol = BB84(length=100)
+    protocol = BB84(length=10)
 
-    print(protocol.run())
+    for i in range(10):
+        print(protocol.run(is_attack=True))
+    
