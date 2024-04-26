@@ -1,6 +1,6 @@
 **BB84 Protocol Simulation**
 
-This repository contains a Python implementation of the BB84 protocol, a quantum key distribution (QKD) algorithm, along with supporting classes for simulating quantum states and operations. 
+This repository contains a Python implementation of the BB84 protocol, a quantum key distribution (QKD) algorithm, along with supporting classes for simulating quantum states and operations and analyzing the performance of the protocal against main-in-the-middle attack.
 
 The project was created for the course Information Theory and Statistics at University of Twente.
 
@@ -10,6 +10,7 @@ The project was created for the course Information Theory and Statistics at Univ
 - `README.md`: Readme file providing an overview of the project and instructions for running the simulation.
 - `qubit.py`: Python script defining the `Qubit` class, which represents a quantum bit (qubit) and provides methods for qubit manipulation and measurement.
 - `bb84.py`: Python script defining the `BB84` class, which encapsulates the BB84 protocol implementation and includes methods for running the simulation and checking for the failure of the protocol.
+- `failure.ipynb`: File for plotting failure probability estimations.
 
 **How to Run:**
 
