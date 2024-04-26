@@ -26,7 +26,7 @@ To run the BB84 protocol simulation, follow these steps:
 python3 main.py
 ```
 
-6. The simulation will execute, and the output will display the generated key strings for Alice and Bob, along with any indication of whether an attack was detected correctly or the protocol failed.
+6. The simulation will execute, and the output will display the estimated probabilities of protocol failure.
 
 **References:**
 
