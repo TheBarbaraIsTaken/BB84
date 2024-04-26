@@ -51,9 +51,8 @@ def bb84_protocol(length, middle_man_eve = False):
     ## Public channel
     alice_announced_bases = alice_bases # Alice announces her bases
     ## Public channel
-    #eve = random.randint(0, 1)  # Eve's presence (0: absent, 1: present)
     middle_man = False
-    if middle_man_eve == 1:
+    if middle_man_eve == True:
         ## Eve measures the qubits
         eve_measured_bits = measure_qubits(qubits, [0]*length)
         ## Eve re-encodes the qubits
@@ -78,24 +77,24 @@ fail_attack = 0
 fail_count_attack = {}
 fail_count_no_attack = {}
 N = 10000
-for length in range(1, 16, 1):
+for length in range(1, 25, 1):
     for index in range(N):
         sifted_key, middle_man_attack = bb84_protocol(length, True)
-        if ((len(sifted_key) == 0 or len(sifted_key) == 1)) or not middle_man_attack:
+        if not middle_man_attack:
             fail_attack += 1
             if length in fail_count_attack:
                 fail_count_attack[length] += 1/N
             else:
                 fail_count_attack[length] = 1/N
         sifted_key_no_attack = bb84_protocol(length)[0]
-        if ((len(sifted_key_no_attack) == 0 or len(sifted_key_no_attack) == 1)):
+        if (len(sifted_key_no_attack) == 0 or len(sifted_key_no_attack) == 1):
             fail_no_attack += 1
             if length in fail_count_no_attack:
                 fail_count_no_attack[length] += 1/N
             else:
                 fail_count_no_attack[length] = 1/N
         
-
+print(fail_count_attack)
 plt.scatter(fail_count_attack.keys(), fail_count_attack.values(), zorder=2)
 plt.grid(zorder=1)
 plt.xlabel('Length')
