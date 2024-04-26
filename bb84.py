@@ -1,7 +1,8 @@
 import numpy as np
 from copy import deepcopy
 from qubit import Qubit
-
+from math import ceil
+from collections import Counter
 
 class BB84:
     def __init__(self, length=5, alice_message=None, alice_base=None, bob_base=None):
@@ -18,6 +19,7 @@ class BB84:
         self.alice_base = alice_base
         self.bob_recieved = None
         self.bob_base = bob_base
+        self.c = 0
 
     def generate_bitstring(self):
         return np.random.randint(low=0, high=2, size=self.length)
@@ -36,6 +38,9 @@ class BB84:
         self.alice_message = None
         self.alice_base = None
         self.bob_base = None
+        self.key_alice = []
+        self.key_bob = []
+
     
     def change_message(self, is_attack=False):
         if self.alice_message is None:
@@ -50,7 +55,7 @@ class BB84:
 
         # Alice sends the qubits to Bob
         if is_attack:
-            # TODO: add attack
+            # attack
             self.eve_measurements = Qubit.measure_qubits(self.alice_shifted_message)
             self.eve_qmeasurements = Qubit.bit_to_qubit(self.eve_measurements)
             self.eve_base = self.generate_bitstring()
@@ -79,21 +84,24 @@ class BB84:
 
     def check(self):
         is_attacked = False
-        self.key_alice = None
-        self.key_bob = None
+        self.key_alice = []
+        self.key_bob = []
 
         self.same_base = self.alice_base == self.bob_base
         
         n = sum(self.same_base)
+        
 
-        self.alice_check = (self.alice_message[self.same_base])[:n//2]
-        self.bob_check = (self.bob_measurements[self.same_base])[:n//2]
+        self.alice_check = (self.alice_message[self.same_base])[:ceil(n/2)]
+        self.bob_check = (self.bob_measurements[self.same_base])[:ceil(n/2)]
 
         if (self.alice_check == self.bob_check).all():
-            self.key_alice = deepcopy((self.alice_message[self.same_base])[n//2:])
-            self.key_bob = deepcopy((self.bob_measurements[self.same_base])[n//2:])
+            self.key_alice = deepcopy((self.alice_message[self.same_base])[ceil(n/2):])
+            self.key_bob = deepcopy((self.bob_measurements[self.same_base])[ceil(n/2):])
         else:
             is_attacked = True
+
+        # self.c += (n==1 and is_attacked==False)
 
         # print(self.alice_base)
         # print(self.bob_base)
@@ -105,7 +113,24 @@ class BB84:
         return is_attacked
     
     def is_failed(self, is_attack):
-        return self.is_attacked != is_attack
+        return self.is_attacked != is_attack or ((len(self.key_alice) == 0 or len(self.key_bob) == 0) and not self.is_attacked and not is_attack)
+    
+    def joint_distr(self):
+        # print(self.alice_message)
+        # print(self.bob_measurements)
+
+        pairs = [str(a)+str(b) for a,b in zip(self.alice_message, self.bob_measurements)]
+        pair_counts = Counter(pairs)
+
+        # print(pairs)
+        # print(pair_counts)
+
+        pair_counts = {k: pair_counts[k]/self.length for k in pair_counts.keys()}
+        
+        # print(pair_counts)
+        # print(1/8, 3/8)
+
+        return pair_counts
 
 
     def run(self, is_attack=False):
