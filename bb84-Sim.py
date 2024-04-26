@@ -60,5 +60,10 @@ def bb84_protocol(n, delta):
 n = 10  # Number of bits in the final key
 delta = 0.2  # Delta value (From the paper, I guess it is the additional bits)
 sifted_key = bb84_protocol(n, delta)
+length = int((4 + delta) * n)
+# Test 1: The sifted key should not be longer than the number of qubits sent
+assert len(sifted_key) <= length, "Sifted key is longer than the number of qubits sent."   
+# Test 2: The sifted key should only contain bits (0s and 1s)
+assert all(bit in [0, 1] for bit in sifted_key), "Sifted key contains invalid values."
 print("Key length:", len(sifted_key))
 print("Sifted key:", sifted_key)
