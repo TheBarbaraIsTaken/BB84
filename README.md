@@ -4,8 +4,15 @@ This repository contains a Python implementation of the BB84 protocol, a quantum
 
 The project was created for the course Information Theory and Statistics at University of Twente.
 
-**Contents:**
+**Contents:** 
 
+The project is two fold, one is an intuitive approach to the BB84 protocol and the other is a formal approach. The intuitive approach is a simple implementation of the BB84 protocol, while the formal approach is a more detailed and structured implementation that includes the use of quantum states and operations.
+
+***Intuitive approach***
+- `bb84-Sim.py`: Pure BB84 protocol  implementation using intuitive approach.
+- `bb84-Sim-Result.py`: BB84 implementation with middleman attack plus result gathering.
+
+***Formal approach***
 - `main.py`: Main Python script for running the BB84 protocol simulation.
 - `README.md`: Readme file providing an overview of the project and instructions for running the simulation.
 - `qubit.py`: Python script defining the `Qubit` class, which represents a quantum bit (qubit) and provides methods for qubit manipulation and measurement.
