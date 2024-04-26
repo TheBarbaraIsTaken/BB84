@@ -26,7 +26,7 @@ if __name__ == "__main__":
     
     # BB84 protocol failure for no attack
     protocol = BB84()
-    N = 10_000
+    N = 5_000
     failures = []
 
     lengths = list(range(1, 25))
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     # BB84 protocol failure with attack
     protocol = BB84()
-    N_ATTACK = 10_000
+    N_ATTACK = 5_000
     failures_attack = []
 
     lengths_attack = list(range(1, 25, 1))
@@ -60,8 +60,16 @@ if __name__ == "__main__":
 
         failures_attack.append(sum(tmp))
 
-    plt.scatter(lengths, np.array(failures) / N, c='g')
+    plt.scatter(lengths, np.array(failures) / N, c='g', zorder=2)
+    plt.grid(alpha=0.8, zorder=1)
+    plt.title("Probability of failure with no attack\nfor different message lengths")
+    plt.xlabel("length")
+    plt.ylabel("probability of failure")
     plt.show()
 
-    plt.scatter(lengths_attack, np.array(failures_attack) / N_ATTACK, c='g')
+    plt.scatter(lengths_attack, np.array(failures_attack) / N_ATTACK, c='g', zorder=2)
+    plt.grid(alpha=0.8, zorder=1)
+    plt.title("Probability of failure with attack\nfor different message lengths")
+    plt.xlabel("length")
+    plt.ylabel("probability of failure")
     plt.show()
